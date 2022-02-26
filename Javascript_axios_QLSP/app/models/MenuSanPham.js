@@ -14,7 +14,9 @@ export class MenuSanPham {
   };
 
   layLocalStorage = function () {
-    this.mangSanPham = JSON.parse(localStorage.getItem(DANH_SACH_SAN_PHAM));
+    if(localStorage.getItem(DANH_SACH_SAN_PHAM)) {
+      this.mangSanPham = JSON.parse(localStorage.getItem(DANH_SACH_SAN_PHAM));
+    }
   };
 
   renderTable = function (id) {
@@ -29,7 +31,7 @@ export class MenuSanPham {
                 <td>${sp.loaiSP}</td>
                 <td>
                   <button onclick="xoaSanPham(${i})" class="btn btn-danger">Xóa</button>
-                  <button class="btn btn-info" onclick="thongTinSP(${i})" data-toggle="modal" data-target="#myModal">Sửa</button>
+                  <button class="btn btn-info" onclick="thongTinSP(${sp.maSP})" data-toggle="modal" data-target="#myModal">Sửa</button>
                 </td>
             </tr>
         `;
@@ -40,26 +42,16 @@ export class MenuSanPham {
   xoaSanPham = function (i) {
     this.mangSanPham.splice(i, 1);
   };
-  layThongTinSP = function (index) {
-    for (let key in this.mangSanPham) {
-      if (key == index) {
-        return this.mangSanPham[key];
-      }
+  layThongTinSP = function (maSP) {
+    console.log(maSP);
+    const index = this.mangSanPham.findIndex(sp => sp.maSP == maSP)
+    if(index !== -1) {
+      return this.mangSanPham[index];
     }
+    return null;     
   };
-  SuaThongTinSP = function (index) {
-    for (let key in this.mangSanPham) {
-      if (key == index) {
-        return this.mangSanPham[key];
-      }
-    }
-  };
-  SanPhamMoi = function (sanPhamMoi, index) {
-    let monAnCu = this.layThongTinSP(index);
-    if (monAnCu) {
-      for (let key in monAnCu) {
-        monAnCu[key] = sanPhamMoi[key];
-      }
-    }
+  SuaThongTinSP = function (maSP, spChinhSua) {
+    const index = this.mangSanPham.findIndex(sp => sp.maSP === maSP);
+    this.mangSanPham[index] = spChinhSua;
   };
 }
